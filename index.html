@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="손글씨 풀이와 개념 학습을 연결한 고등학교 수학 해설 플레이어 예시">
+  <title>풀이가 보이는 수학 · 16번</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230b2a53'/%3E%3Cpath d='M16 42 39 19l9 9-23 23-12 3z' fill='%23ffcc58'/%3E%3Cpath d='m39 19 4-4a3 3 0 0 1 4 0l5 5a3 3 0 0 1 0 4l-4 4z' fill='%23fff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #0b2a53;
+      --navy-2: #123f72;
+      --ink: #073f7b;
+      --paper: #ffffff;
+      --page: #f3f7fb;
+      --muted: #637083;
+      --line: #d9e3ee;
+      --yellow: #ffd45f;
+      --yellow-strong: #ffc83d;
+      --green: #1c7c66;
+      --shadow: 0 18px 48px rgba(12, 43, 80, .11);
+      font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(78, 139, 202, .12), transparent 28rem),
+        var(--page);
+      color: #152235;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .topbar {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 clamp(18px, 4vw, 56px);
+      background: rgba(255,255,255,.88);
+      border-bottom: 1px solid rgba(11,42,83,.09);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--navy);
+      font-weight: 850;
+      letter-spacing: -.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: var(--yellow);
+      background: var(--navy);
+      font-size: 20px;
+      box-shadow: 0 8px 18px rgba(11,42,83,.2);
+    }
+
+    .exam-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .exam-progress strong { color: var(--navy); }
+
+    .mini-track {
+      width: 92px;
+      height: 6px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #dbe5ef;
+    }
+
+    .mini-track::after {
+      content: "";
+      display: block;
+      width: 53.3%;
+      height: 100%;
+      background: var(--navy-2);
+      border-radius: inherit;
+    }
+
+    main {
+      width: min(1480px, 100%);
+      margin: 0 auto;
+      padding: clamp(22px, 4vw, 48px);
+    }
+
+    .exam-layout {
+      display: grid;
+      grid-template-columns: minmax(420px, .88fr) minmax(0, 1.12fr);
+      gap: clamp(18px, 2.4vw, 34px);
+      align-items: start;
+    }
+
+    .question-pane {
+      position: sticky;
+      top: 86px;
+      z-index: 8;
+    }
+
+    .question-sheet {
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(18,63,114,.13);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .question-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 44px;
+      padding: 0 15px;
+      color: var(--navy);
+      background: #f7f9fc;
+      border-bottom: 1px solid var(--line);
+      font-size: .84rem;
+      font-weight: 850;
+    }
+
+    .question-label span:last-child {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .question-crop {
+      width: 100%;
+      aspect-ratio: 1673 / 238;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .question-crop img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: none;
+      user-select: none;
+    }
+
+    .question-note {
+      margin: 0;
+      padding: 10px 15px 12px;
+      color: #66758a;
+      background: #fff;
+      border-top: 1px solid #edf1f5;
+      font-size: .78rem;
+      line-height: 1.45;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .player-card, .lesson-panel {
+      background: #fff;
+      border: 1px solid rgba(18,63,114,.11);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .player-card { overflow: hidden; }
+
+    .player-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 17px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .player-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .97rem;
+      font-weight: 850;
+      color: var(--navy);
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #ff6f61;
+      box-shadow: 0 0 0 5px rgba(255,111,97,.12);
+    }
+
+    .demo-label {
+      padding: 6px 9px;
+      border-radius: 999px;
+      color: #536175;
+      background: #eef3f8;
+      font-size: .76rem;
+      font-weight: 750;
+    }
+
+    .board-wrap {
+      padding: clamp(10px, 2vw, 20px);
+      background: #eaf0f6;
+    }
+
+    .ink-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1673 / 827;
+      overflow: hidden;
+      border-radius: 14px;
+      background:
+        linear-gradient(rgba(55,108,160,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(55,108,160,.045) 1px, transparent 1px),
+        var(--paper);
+      background-size: 24px 24px;
+      box-shadow: inset 0 0 0 1px rgba(15,58,101,.08);
+    }
+
+    .line-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      clip-path: inset(0 100% 100% 0);
+    }
+
+    .line-layer img {
+      position: absolute;
+      width: 100%;
+      height: auto;
+      left: 0;
+      top: -29.02%;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .concept-sticker {
+      position: absolute;
+      z-index: 4;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 2px solid #2b2718;
+      border-radius: 8px 12px 9px 13px;
+      background: var(--yellow);
+      color: #2b2718;
+      box-shadow: 3px 4px 0 rgba(43,39,24,.24);
+      font-size: clamp(.68rem, 1.4vw, .9rem);
+      font-weight: 900;
+      transform: translateY(8px) rotate(-2deg) scale(.92);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .25s cubic-bezier(.2,.9,.3,1.2);
+    }
+
+    .concept-sticker::before {
+      content: "!";
+      display: inline-grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      border-radius: 50%;
+      color: var(--yellow);
+      background: #2b2718;
+      font-size: .76rem;
+    }
+
+    .concept-sticker.visible {
+      opacity: 1;
+      transform: translateY(0) rotate(-2deg) scale(1);
+      pointer-events: auto;
+      animation: sticker-pulse 2.1s ease-in-out infinite;
+    }
+
+    .concept-sticker:hover, .concept-sticker:focus-visible {
+      background: var(--yellow-strong);
+      transform: translateY(-2px) rotate(0deg) scale(1.03);
+      outline: 3px solid rgba(18,63,114,.26);
+      outline-offset: 2px;
+    }
+
+    .sticker-base { left: 74%; top: 7%; }
+    .sticker-equal { left: 64%; top: 31%; }
+    .sticker-domain { left: 61%; top: 64%; }
+
+    .pen-cursor {
+      position: absolute;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.92);
+      color: var(--ink);
+      box-shadow: 0 5px 16px rgba(7,63,123,.22);
+      font-size: 19px;
+      transform: translate(-20%, -68%) rotate(-12deg);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .pen-cursor.writing { opacity: 1; }
+
+    .now-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 10px 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .now-row strong { color: var(--navy); }
+
+    .controls {
+      display: grid;
+      grid-template-columns: auto auto auto minmax(120px, 1fr) auto auto;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 20px 20px;
+    }
+
+    .control-btn, .play-btn, .speed-select {
+      min-width: 44px;
+      min-height: 44px;
+      border: 1px solid #c9d6e3;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--navy);
+      font-weight: 800;
+    }
+
+    .control-btn:hover, .speed-select:hover { background: #eef5fb; }
+
+    .play-btn {
+      padding: 0 18px;
+      border-color: var(--navy);
+      color: #fff;
+      background: var(--navy);
+      box-shadow: 0 8px 18px rgba(11,42,83,.2);
+    }
+
+    .play-btn:hover { background: var(--navy-2); }
+
+    .timeline {
+      width: 100%;
+      accent-color: var(--navy-2);
+      cursor: pointer;
+    }
+
+    .timecode {
+      min-width: 78px;
+      color: #5c6c7f;
+      font-variant-numeric: tabular-nums;
+      font-size: .84rem;
+      text-align: center;
+    }
+
+    .speed-select { padding: 0 9px; }
+
+    .lesson-panel {
+      padding: 20px;
+      position: static;
+    }
+
+    .lesson-panel h2 {
+      margin: 0 0 6px;
+      color: var(--navy);
+      font-size: 1.05rem;
+    }
+
+    .lesson-panel > p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: .86rem;
+      line-height: 1.55;
+    }
+
+    .step-list {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .step-button {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      background: transparent;
+      color: #465469;
+      text-align: left;
+      line-height: 1.35;
+    }
+
+    .step-button:hover { background: #f1f6fb; }
+
+    .step-index {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: #edf2f7;
+      color: #607083;
+      font-size: .8rem;
+      font-weight: 850;
+    }
+
+    .step-button.active {
+      border-color: #b9cee2;
+      background: #eaf3fc;
+      color: var(--navy);
+      font-weight: 800;
+    }
+
+    .step-button.active .step-index {
+      color: #fff;
+      background: var(--navy-2);
+    }
+
+    .tip {
+      margin-top: 18px;
+      padding: 13px;
+      border-radius: 13px;
+      background: #fff8dd;
+      color: #5f511d;
+      font-size: .81rem;
+      line-height: 1.55;
+    }
+
+    dialog {
+      width: min(560px, calc(100% - 32px));
+      max-height: min(720px, calc(100dvh - 32px));
+      padding: 0;
+      border: 0;
+      border-radius: 22px;
+      color: #172438;
+      background: #fff;
+      box-shadow: 0 28px 85px rgba(5,29,59,.35);
+    }
+
+    dialog::backdrop {
+      background: rgba(5,22,43,.58);
+      backdrop-filter: blur(4px);
+    }
+
+    .concept-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 24px 18px;
+      background: #fff7d9;
+      border-bottom: 1px solid #eadb9d;
+    }
+
+    .concept-kicker {
+      margin: 0 0 5px;
+      color: #846b0e;
+      font-size: .76rem;
+      font-weight: 900;
+      letter-spacing: .05em;
+    }
+
+    .concept-head h2 {
+      margin: 0;
+      color: #2b2718;
+      font-size: 1.35rem;
+    }
+
+    .close-x {
+      flex: 0 0 auto;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 12px;
+      color: #594e27;
+      background: rgba(255,255,255,.72);
+      font-size: 1.25rem;
+    }
+
+    .concept-body {
+      padding: 22px 24px 6px;
+      overflow: auto;
+      line-height: 1.7;
+    }
+
+    .concept-lead { margin-top: 0; }
+
+    .formula-box {
+      padding: 16px;
+      border-left: 4px solid var(--navy-2);
+      border-radius: 10px;
+      color: var(--navy);
+      background: #eef5fb;
+      font-family: "Times New Roman", serif;
+      font-size: 1.22rem;
+      text-align: center;
+    }
+
+    .concept-body ul { padding-left: 21px; }
+    .concept-body li + li { margin-top: 7px; }
+
+    .concept-foot {
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px 24px 24px;
+    }
+
+    .return-btn {
+      min-height: 46px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 12px;
+      color: #fff;
+      background: var(--navy);
+      font-weight: 850;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @keyframes sticker-pulse {
+      0%, 72%, 100% { box-shadow: 3px 4px 0 rgba(43,39,24,.24); }
+      84% { box-shadow: 3px 4px 0 rgba(43,39,24,.24), 0 0 0 7px rgba(255,200,61,.24); }
+    }
+
+    @media (max-width: 1100px) {
+      .exam-layout { grid-template-columns: minmax(360px, .82fr) minmax(0, 1.18fr); }
+      .step-list {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 4px;
+      }
+      .step-list li { flex: 0 0 min(220px, 70vw); scroll-snap-align: start; }
+    }
+
+    @media (max-width: 900px) {
+      .exam-layout { grid-template-columns: 1fr; gap: 14px; }
+      .question-pane { top: 64px; }
+      .workspace { grid-template-columns: 1fr; }
+      .lesson-panel { position: static; }
+      .step-list li { flex: 0 0 min(240px, 78vw); scroll-snap-align: start; }
+      .lesson-panel > p, .tip { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .topbar { height: 58px; }
+      .brand span:last-child { font-size: .92rem; }
+      .mini-track { display: none; }
+      main { padding: 14px; }
+      .question-pane { top: 58px; margin: 0 -14px; }
+      .question-sheet { border-radius: 0 0 14px 14px; }
+      .question-label { min-height: 34px; padding: 0 12px; font-size: .76rem; }
+      .question-crop {
+        height: 90px;
+        aspect-ratio: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
+      }
+      .question-crop img { width: 632px; }
+      .question-note { display: none; }
+      .player-card, .lesson-panel { border-radius: 18px; }
+      .player-head { padding: 13px 14px; }
+      .board-wrap { padding: 7px; }
+      .ink-stage { border-radius: 10px; }
+      .concept-sticker {
+        min-height: 32px;
+        padding: 5px 7px;
+        border-width: 1.5px;
+        box-shadow: 2px 3px 0 rgba(43,39,24,.24);
+      }
+      .concept-sticker::before { width: 17px; height: 17px; margin-right: 3px; }
+      .now-row { min-height: 42px; padding: 8px 13px; font-size: .8rem; }
+      .controls {
+        grid-template-columns: auto auto auto 1fr;
+        gap: 7px;
+        padding: 11px 12px 15px;
+      }
+      .timeline { grid-column: 1 / -1; grid-row: 1; }
+      .timecode { grid-column: 4; grid-row: 2; justify-self: end; }
+      .speed-select { grid-column: 3; grid-row: 2; }
+      .control-btn, .play-btn, .speed-select { min-height: 42px; }
+      .play-btn { padding: 0 13px; }
+      .lesson-panel { padding: 16px 14px; }
+      dialog {
+        width: 100%;
+        max-width: none;
+        margin: auto 0 0;
+        border-radius: 22px 22px 0 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; }
+      .concept-sticker.visible { animation: none; }
+      .concept-sticker { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">✎</span>
+      <span>풀이가 보이는 수학</span>
+    </div>
+    <div class="exam-progress" aria-label="전체 문제 진행률">
+      <strong>16</strong><span>/ 30</span>
+      <span class="mini-track" aria-hidden="true"></span>
+    </div>
+  </header>
+
+  <main class="exam-layout">
+    <aside class="question-pane" aria-label="문제 원본">
+      <div class="question-sheet">
+        <div class="question-label"><span>문제 16</span><span>원본 시험지</span></div>
+        <div class="question-crop" tabindex="0" aria-label="문제 원본 이미지. 작은 화면에서는 좌우로 이동할 수 있습니다.">
+          <img src="solution-16.png" alt="방정식 log₃(x−3)=log₉(2x−3)을 만족시키는 실수 x의 값을 구하는 16번 문제">
+        </div>
+        <p class="question-note">풀이를 아래로 내려보아도 문제는 이 위치에 고정됩니다.</p>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <section class="player-card" aria-label="손글씨 풀이 플레이어">
+        <div class="player-head">
+          <div class="player-title"><span class="live-dot"></span>손글씨 풀이</div>
+          <span class="demo-label">시험지 고정 보기</span>
+        </div>
+
+        <div class="board-wrap">
+          <div class="ink-stage" id="inkStage">
+            <div class="line-layer" data-line="0"><img src="solution-16.png" alt=""></div>
+            <div class="line-layer" data-line="1"><img src="solution-16.png" alt=""></div>
+            <div class="line-layer" data-line="2"><img src="solution-16.png" alt=""></div>
+            <div class="line-layer" data-line="3"><img src="solution-16.png" alt=""></div>
+            <div class="line-layer" data-line="4"><img src="solution-16.png" alt=""></div>
+
+            <div class="pen-cursor" id="penCursor" aria-hidden="true">✎</div>
+
+            <button class="concept-sticker sticker-base" data-show="6.8" data-concept="base">개념확인</button>
+            <button class="concept-sticker sticker-equal" data-show="13.8" data-concept="equal">개념확인</button>
+            <button class="concept-sticker sticker-domain" data-show="28.2" data-concept="domain">개념확인</button>
+          </div>
+        </div>
+
+        <div class="now-row" aria-live="polite">
+          <span>현재 단계</span><strong id="currentStepLabel">밑을 9로 통일하기</strong>
+        </div>
+
+        <div class="controls">
+          <button class="control-btn" id="prevBtn" aria-label="이전 단계">‹</button>
+          <button class="play-btn" id="playBtn">재생</button>
+          <button class="control-btn" id="nextBtn" aria-label="다음 단계">›</button>
+          <label class="sr-only" for="timeline">풀이 재생 위치</label>
+          <input class="timeline" id="timeline" type="range" min="0" max="36" step="0.05" value="0">
+          <span class="timecode" id="timecode">00:00 / 00:36</span>
+          <label class="sr-only" for="speedSelect">재생 속도</label>
+          <select class="speed-select" id="speedSelect" aria-label="재생 속도">
+            <option value="0.75">0.75×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.5">1.5×</option>
+            <option value="2">2×</option>
+          </select>
+        </div>
+      </section>
+
+      <aside class="lesson-panel" aria-labelledby="steps-title">
+        <h2 id="steps-title">풀이 단계</h2>
+        <p>단계를 누르면 해당 풀이 장면으로 바로 이동합니다.</p>
+        <ol class="step-list" id="stepList"></ol>
+        <div class="tip"><strong>노란 스티커를 눌러보세요.</strong><br>영상은 멈추고, 필요한 개념만 짧게 공부한 뒤 같은 위치로 돌아옵니다.</div>
+      </aside>
+    </div>
+  </main>
+
+  <dialog id="conceptDialog" aria-labelledby="conceptTitle">
+    <div class="concept-head">
+      <div>
+        <p class="concept-kicker">개념확인!</p>
+        <h2 id="conceptTitle"></h2>
+      </div>
+      <button class="close-x" id="closeDialogX" aria-label="개념 설명 닫기">×</button>
+    </div>
+    <div class="concept-body" id="conceptBody"></div>
+    <div class="concept-foot">
+      <button class="return-btn" id="returnBtn">풀이로 돌아가기</button>
+    </div>
+  </dialog>
+
+  <script>
+    const totalDuration = 36;
+    const steps = [
+      { title: "밑을 9로 통일하기", start: 0, end: 7, box: [3.6, 74.1, 16.9, 23.3] },
+      { title: "진수끼리 비교하기", start: 8, end: 14, box: [24.8, 62.2, 38.7, 28.1] },
+      { title: "이차방정식 정리하기", start: 15, end: 20, box: [39.9, 56.8, 52, 28] },
+      { title: "방정식의 해 구하기", start: 21, end: 28, box: [52.6, 58.3, 68.9, 26.6] },
+      { title: "진수 조건으로 검산하기", start: 29, end: 34, box: [70.1, 42.4, 82.2, 23.3] }
+    ];
+
+    const concepts = {
+      base: {
+        title: "로그의 밑 변환",
+        lead: "밑 3을 밑 9로 바꾸면 두 로그를 같은 밑에서 비교할 수 있습니다.",
+        formula: "log₃ A = 2log₉ A = log₉ A²  (A &gt; 0)",
+        bullets: ["9는 3²이므로 log₃A = 2log₉A입니다.", "로그의 성질 2log₉A = log₉A²을 적용합니다."]
+      },
+      equal: {
+        title: "같은 밑의 로그 비교",
+        lead: "밑이 같고 진수가 양수라면 로그값이 같을 때 진수도 같습니다.",
+        formula: "log₉ M = log₉ N  ⟹  M = N",
+        bullets: ["로그함수는 정의역에서 일대일 함수입니다.", "따라서 (x−3)² = 2x−3으로 바꿀 수 있습니다."]
+      },
+      domain: {
+        title: "로그의 진수 조건",
+        lead: "방정식을 풀어 얻은 값은 반드시 원래 로그식에 넣어 확인해야 합니다.",
+        formula: "x−3 &gt; 0,  2x−3 &gt; 0  ⟹  x &gt; 3",
+        bullets: ["x=2는 x−3이 음수이므로 사용할 수 없습니다.", "x=6은 모든 진수 조건을 만족하므로 정답입니다."]
+      }
+    };
+
+    const layers = [...document.querySelectorAll(".line-layer")];
+    const stickers = [...document.querySelectorAll(".concept-sticker")];
+    const playBtn = document.getElementById("playBtn");
+    const timeline = document.getElementById("timeline");
+    const speedSelect = document.getElementById("speedSelect");
+    const timecode = document.getElementById("timecode");
+    const currentStepLabel = document.getElementById("currentStepLabel");
+    const penCursor = document.getElementById("penCursor");
+    const stepList = document.getElementById("stepList");
+    const dialog = document.getElementById("conceptDialog");
+    const conceptTitle = document.getElementById("conceptTitle");
+    const conceptBody = document.getElementById("conceptBody");
+
+    let currentTime = 0;
+    let playing = false;
+    let playbackRate = 1;
+    let lastFrame = 0;
+    let animationFrame = null;
+    let resumeAfterDialog = false;
+
+    steps.forEach((step, index) => {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.className = "step-button";
+      button.type = "button";
+      button.innerHTML = `<span class="step-index">${index + 1}</span><span>${step.title}</span>`;
+      button.addEventListener("click", () => seek(step.start));
+      item.appendChild(button);
+      stepList.appendChild(item);
+    });
+
+    const stepButtons = [...document.querySelectorAll(".step-button")];
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function formatTime(seconds) {
+      const safe = Math.max(0, Math.floor(seconds));
+      return `00:${String(safe).padStart(2, "0")}`;
+    }
+
+    function getActiveStepIndex() {
+      const upcoming = steps.findIndex(step => currentTime < step.end + .25);
+      return upcoming === -1 ? steps.length - 1 : upcoming;
+    }
+
+    function setLayerReveal(layer, step, progress) {
+      const [top, rightEdge, bottomEdge, left] = step.box;
+      const currentRightEdge = left + (rightEdge - left) * progress;
+      const rightInset = 100 - currentRightEdge;
+      const bottomInset = 100 - bottomEdge;
+      layer.style.clipPath = `inset(${top}% ${rightInset}% ${bottomInset}% ${left}%)`;
+    }
+
+    function render() {
+      layers.forEach((layer, index) => {
+        const step = steps[index];
+        const progress = clamp((currentTime - step.start) / (step.end - step.start), 0, 1);
+        setLayerReveal(layer, step, progress);
+      });
+
+      stickers.forEach(sticker => {
+        sticker.classList.toggle("visible", currentTime >= Number(sticker.dataset.show));
+      });
+
+      const activeIndex = getActiveStepIndex();
+      const activeStep = steps[activeIndex];
+      currentStepLabel.textContent = activeStep.title;
+      stepButtons.forEach((button, index) => button.classList.toggle("active", index === activeIndex));
+
+      const writingProgress = (currentTime - activeStep.start) / (activeStep.end - activeStep.start);
+      if (playing && writingProgress >= 0 && writingProgress <= 1) {
+        const [top, rightEdge, bottomEdge, left] = activeStep.box;
+        const x = left + (rightEdge - left) * writingProgress;
+        const centerY = (top + bottomEdge) / 2 + Math.sin(writingProgress * Math.PI * 4) * .8;
+        penCursor.style.left = `${x}%`;
+        penCursor.style.top = `${centerY}%`;
+        penCursor.classList.add("writing");
+      } else {
+        penCursor.classList.remove("writing");
+      }
+
+      timeline.value = currentTime;
+      timecode.textContent = `${formatTime(currentTime)} / 00:36`;
+      playBtn.textContent = playing ? "일시정지" : "재생";
+    }
+
+    function tick(timestamp) {
+      if (!playing) return;
+      if (!lastFrame) lastFrame = timestamp;
+      const elapsed = (timestamp - lastFrame) / 1000;
+      lastFrame = timestamp;
+      currentTime = Math.min(totalDuration, currentTime + elapsed * playbackRate);
+      if (currentTime >= totalDuration) {
+        playing = false;
+        lastFrame = 0;
+      }
+      render();
+      if (playing) animationFrame = requestAnimationFrame(tick);
+    }
+
+    function play() {
+      if (currentTime >= totalDuration) currentTime = 0;
+      playing = true;
+      lastFrame = 0;
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(tick);
+      render();
+    }
+
+    function pause() {
+      playing = false;
+      lastFrame = 0;
+      cancelAnimationFrame(animationFrame);
+      render();
+    }
+
+    function seek(time) {
+      currentTime = clamp(time, 0, totalDuration);
+      render();
+    }
+
+    playBtn.addEventListener("click", () => playing ? pause() : play());
+    timeline.addEventListener("input", event => seek(Number(event.target.value)));
+    speedSelect.addEventListener("change", event => playbackRate = Number(event.target.value));
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      const index = getActiveStepIndex();
+      const target = currentTime > steps[index].start + 1 ? steps[index].start : steps[Math.max(0, index - 1)].start;
+      seek(target);
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      const index = getActiveStepIndex();
+      seek(steps[Math.min(steps.length - 1, index + 1)].start);
+    });
+
+    stickers.forEach(sticker => {
+      sticker.addEventListener("click", () => {
+        const concept = concepts[sticker.dataset.concept];
+        resumeAfterDialog = playing;
+        pause();
+        conceptTitle.textContent = concept.title;
+        conceptBody.innerHTML = `
+          <p class="concept-lead">${concept.lead}</p>
+          <div class="formula-box">${concept.formula}</div>
+          <ul>${concept.bullets.map(item => `<li>${item}</li>`).join("")}</ul>
+        `;
+        dialog.showModal();
+      });
+    });
+
+    function closeConcept() {
+      dialog.close();
+      if (resumeAfterDialog) play();
+      resumeAfterDialog = false;
+    }
+
+    document.getElementById("returnBtn").addEventListener("click", closeConcept);
+    document.getElementById("closeDialogX").addEventListener("click", closeConcept);
+    dialog.addEventListener("click", event => {
+      if (event.target === dialog) closeConcept();
+    });
+    dialog.addEventListener("cancel", event => {
+      event.preventDefault();
+      closeConcept();
+    });
+
+    render();
+  </script>
+</body>
+</html>
+
