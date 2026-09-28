@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="손글씨 풀이와 개념 학습을 연결한 고등학교 수학 해설 플레이어 예시">
-  <title>풀이가 보이는 수학 · 16번</title>
+  <meta name="description" content="2026년 9월 고3 모의고사 수학 손글씨 풀이와 개념 학습">
+  <title>2026년 9월 모의고사 · 풀이가 보이는 수학</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230b2a53'/%3E%3Cpath d='M16 42 39 19l9 9-23 23-12 3z' fill='%23ffcc58'/%3E%3Cpath d='m39 19 4-4a3 3 0 0 1 4 0l5 5a3 3 0 0 1 0 4l-4 4z' fill='%23fff'/%3E%3C/svg%3E">
   <style>
     :root {
@@ -27,7 +27,7 @@
 
     body {
       margin: 0;
-      min-width: 320px;
+      min-width: 0;
       background:
         radial-gradient(circle at 10% 0%, rgba(78, 139, 202, .12), transparent 28rem),
         var(--page);
@@ -59,6 +59,7 @@
       color: var(--navy);
       font-weight: 850;
       letter-spacing: -.04em;
+      text-decoration: none;
     }
 
     .brand-mark {
@@ -99,6 +100,273 @@
       background: var(--navy-2);
       border-radius: inherit;
     }
+
+    [hidden] { display: none !important; }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid #cbd8e5;
+      border-radius: 11px;
+      color: var(--navy);
+      background: #fff;
+      font-size: .84rem;
+      font-weight: 850;
+      text-decoration: none;
+    }
+
+    .home-link:hover { background: #eef5fb; }
+
+    .home-main {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: clamp(34px, 6vw, 82px) clamp(18px, 4vw, 42px) 72px;
+    }
+
+    .home-hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 58px);
+      border-radius: 32px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 88% 18%, rgba(255,212,95,.34), transparent 18rem),
+        linear-gradient(135deg, #0b2a53 0%, #124d83 100%);
+      box-shadow: 0 24px 70px rgba(11,42,83,.2);
+    }
+
+    .home-hero::after {
+      content: "∫";
+      position: absolute;
+      right: clamp(24px, 8vw, 100px);
+      bottom: -72px;
+      color: rgba(255,255,255,.08);
+      font-family: Georgia, serif;
+      font-size: clamp(12rem, 25vw, 20rem);
+      line-height: 1;
+      transform: rotate(9deg);
+      pointer-events: none;
+    }
+
+    .home-eyebrow {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      min-height: 31px;
+      padding: 0 12px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
+      color: #ffe598;
+      background: rgba(255,255,255,.08);
+      font-size: .78rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+    }
+
+    .home-hero h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 18px 0 13px;
+      font-size: clamp(2rem, 5vw, 4.25rem);
+      line-height: 1.08;
+      letter-spacing: -.065em;
+    }
+
+    .home-hero p {
+      position: relative;
+      z-index: 1;
+      max-width: 650px;
+      margin: 0;
+      color: rgba(255,255,255,.76);
+      font-size: clamp(.95rem, 1.8vw, 1.08rem);
+      line-height: 1.75;
+    }
+
+    .exam-summary {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .summary-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 38px;
+      padding: 0 13px;
+      border-radius: 11px;
+      color: #fff;
+      background: rgba(255,255,255,.1);
+      font-size: .84rem;
+      font-weight: 700;
+    }
+
+    .summary-chip strong { color: var(--yellow); }
+
+    .catalog {
+      margin-top: clamp(34px, 5vw, 54px);
+    }
+
+    .catalog-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .catalog-kicker {
+      margin: 0 0 6px;
+      color: #3472a9;
+      font-size: .76rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .catalog h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(1.45rem, 3vw, 2.05rem);
+      letter-spacing: -.045em;
+    }
+
+    .catalog-guide {
+      margin: 0;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+
+    .subject-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 8px;
+      border: 1px solid rgba(18,63,114,.1);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 12px 32px rgba(12,43,80,.07);
+    }
+
+    .subject-tab {
+      min-height: 58px;
+      padding: 8px 12px;
+      border: 0;
+      border-radius: 13px;
+      color: #59687b;
+      background: transparent;
+      font-weight: 850;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+
+    .subject-tab:hover { background: #f1f6fb; }
+
+    .subject-tab[aria-selected="true"] {
+      color: #fff;
+      background: var(--navy);
+      box-shadow: 0 8px 18px rgba(11,42,83,.18);
+    }
+
+    .subject-tab span {
+      display: block;
+      margin-top: 2px;
+      color: inherit;
+      font-size: .7rem;
+      font-weight: 650;
+      opacity: .68;
+    }
+
+    .problem-browser {
+      margin-top: 16px;
+      padding: clamp(20px, 3.4vw, 34px);
+      border: 1px solid rgba(18,63,114,.11);
+      border-radius: 26px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .browser-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .browser-title {
+      margin: 0;
+      color: var(--navy);
+      font-size: 1.08rem;
+      font-weight: 900;
+    }
+
+    .browser-range {
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 750;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(11, minmax(50px, 1fr));
+      gap: 10px;
+    }
+
+    .problem-button {
+      position: relative;
+      min-height: 68px;
+      border: 1px solid #d5e0ea;
+      border-radius: 15px;
+      color: var(--navy);
+      background: #f9fbfd;
+      font-size: 1rem;
+      font-weight: 900;
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .problem-button:hover {
+      transform: translateY(-2px);
+      border-color: #8aabc9;
+      box-shadow: 0 9px 20px rgba(11,42,83,.1);
+    }
+
+    .problem-button small {
+      display: block;
+      margin-top: 4px;
+      color: #8a96a6;
+      font-size: .62rem;
+      font-weight: 750;
+    }
+
+    .problem-button.available {
+      border-color: #e7ba32;
+      color: #302814;
+      background: linear-gradient(145deg, #ffe99f, var(--yellow));
+      box-shadow: 0 9px 20px rgba(219,166,12,.18);
+    }
+
+    .problem-button.available small { color: #69550d; }
+
+    .selection-notice {
+      min-height: 25px;
+      margin: 17px 2px 0;
+      color: #68778a;
+      font-size: .84rem;
+    }
+
+    .selection-notice strong { color: var(--navy); }
 
     main {
       width: min(1480px, 100%);
@@ -580,6 +848,7 @@
     }
 
     @media (max-width: 900px) {
+      .problem-grid { grid-template-columns: repeat(6, minmax(48px, 1fr)); }
       .exam-layout { grid-template-columns: 1fr; gap: 14px; }
       .question-pane { top: 64px; }
       .workspace { grid-template-columns: 1fr; }
@@ -591,7 +860,20 @@
     @media (max-width: 640px) {
       .topbar { height: 58px; }
       .brand span:last-child { font-size: .92rem; }
+      .topbar-actions { gap: 8px; }
+      .home-link { min-height: 34px; padding: 0 10px; font-size: .76rem; }
       .mini-track { display: none; }
+      .exam-progress span:not(.mini-track) { display: none; }
+      .home-main { padding: 20px 14px 48px; }
+      .home-hero { padding: 28px 22px; border-radius: 24px; }
+      .home-hero h1 { margin-top: 15px; }
+      .catalog-head { display: block; }
+      .catalog-guide { margin-top: 8px; }
+      .subject-tabs { grid-template-columns: repeat(2, 1fr); }
+      .subject-tab { min-height: 54px; }
+      .problem-browser { padding: 20px 15px; border-radius: 20px; }
+      .problem-grid { grid-template-columns: repeat(4, minmax(48px, 1fr)); gap: 8px; }
+      .problem-button { min-height: 60px; border-radius: 13px; }
       main { padding: 14px; }
       .question-pane { top: 58px; margin: 0 -14px; }
       .question-sheet { border-radius: 0 0 14px 14px; }
@@ -636,6 +918,11 @@
       }
     }
 
+    @media (max-width: 390px) {
+      .brand span:last-child { display: none; }
+      .problem-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; }
       .concept-sticker.visible { animation: none; }
@@ -645,16 +932,61 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">
+    <a class="brand" href="#" aria-label="모의고사 메인으로 이동">
       <span class="brand-mark" aria-hidden="true">✎</span>
       <span>풀이가 보이는 수학</span>
-    </div>
-    <div class="exam-progress" aria-label="전체 문제 진행률">
-      <strong>16</strong><span>/ 30</span>
-      <span class="mini-track" aria-hidden="true"></span>
+    </a>
+    <div class="topbar-actions">
+      <a class="home-link" id="homeLink" href="#" hidden>← 메인 화면</a>
+      <div class="exam-progress" id="examProgress" aria-label="전체 문제 진행률" hidden>
+        <strong>16</strong><span>/ 30</span>
+        <span class="mini-track" aria-hidden="true"></span>
+      </div>
     </div>
   </header>
 
+  <div id="homeView">
+    <main class="home-main">
+      <section class="home-hero" aria-labelledby="exam-title">
+        <span class="home-eyebrow">HIGH SCHOOL SENIOR · MATHEMATICS</span>
+        <h1 id="exam-title">2026년 9월<br>고3 모의고사</h1>
+        <p>문제를 고르고, 손글씨로 이어지는 풀이를 따라가세요. 막히는 순간에는 ‘개념확인’으로 필요한 내용만 바로 복습할 수 있습니다.</p>
+        <div class="exam-summary" aria-label="시험 구성">
+          <span class="summary-chip"><strong>22문항</strong> 공통</span>
+          <span class="summary-chip"><strong>8문항</strong> 선택</span>
+          <span class="summary-chip"><strong>3과목</strong> 미적분 · 확률과 통계 · 기하</span>
+        </div>
+      </section>
+
+      <section class="catalog" aria-labelledby="catalog-title">
+        <div class="catalog-head">
+          <div>
+            <p class="catalog-kicker">SOLUTION LIBRARY</p>
+            <h2 id="catalog-title">풀이할 문제를 선택하세요</h2>
+          </div>
+          <p class="catalog-guide">현재 16번 풀이를 볼 수 있습니다.</p>
+        </div>
+
+        <div class="subject-tabs" role="tablist" aria-label="시험 과목 선택">
+          <button class="subject-tab" id="tab-common" type="button" role="tab" aria-selected="true" aria-controls="problemPanel" data-subject="common">공통<span>1–22번</span></button>
+          <button class="subject-tab" id="tab-calculus" type="button" role="tab" aria-selected="false" aria-controls="problemPanel" data-subject="calculus">미적분<span>23–30번</span></button>
+          <button class="subject-tab" id="tab-statistics" type="button" role="tab" aria-selected="false" aria-controls="problemPanel" data-subject="statistics">확률과 통계<span>23–30번</span></button>
+          <button class="subject-tab" id="tab-geometry" type="button" role="tab" aria-selected="false" aria-controls="problemPanel" data-subject="geometry">기하<span>23–30번</span></button>
+        </div>
+
+        <div class="problem-browser" id="problemPanel" role="tabpanel" aria-labelledby="tab-common">
+          <div class="browser-head">
+            <h3 class="browser-title" id="browserTitle">공통</h3>
+            <span class="browser-range" id="browserRange">1번–22번</span>
+          </div>
+          <div class="problem-grid" id="problemGrid" aria-label="문제 번호"></div>
+          <p class="selection-notice" id="selectionNotice" aria-live="polite">노란색으로 표시된 문제는 풀이가 준비되어 있습니다.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="solutionView" hidden>
   <main class="exam-layout">
     <aside class="question-pane" aria-label="문제 원본">
       <div class="question-sheet">
@@ -718,6 +1050,7 @@
       </aside>
     </div>
   </main>
+  </div>
 
   <dialog id="conceptDialog" aria-labelledby="conceptTitle">
     <div class="concept-head">
@@ -734,6 +1067,67 @@
   </dialog>
 
   <script>
+    const homeView = document.getElementById("homeView");
+    const solutionView = document.getElementById("solutionView");
+    const homeLink = document.getElementById("homeLink");
+    const examProgress = document.getElementById("examProgress");
+    const problemGrid = document.getElementById("problemGrid");
+    const browserTitle = document.getElementById("browserTitle");
+    const browserRange = document.getElementById("browserRange");
+    const problemPanel = document.getElementById("problemPanel");
+    const selectionNotice = document.getElementById("selectionNotice");
+    const subjectTabs = [...document.querySelectorAll(".subject-tab")];
+
+    const subjectData = {
+      common: { label: "공통", start: 1, end: 22 },
+      calculus: { label: "미적분", start: 23, end: 30 },
+      statistics: { label: "확률과 통계", start: 23, end: 30 },
+      geometry: { label: "기하", start: 23, end: 30 }
+    };
+
+    let activeSubject = "common";
+
+    function renderProblemGrid() {
+      const subject = subjectData[activeSubject];
+      browserTitle.textContent = subject.label;
+      browserRange.textContent = `${subject.start}번–${subject.end}번`;
+      problemPanel.setAttribute("aria-labelledby", `tab-${activeSubject}`);
+      problemGrid.innerHTML = "";
+
+      for (let number = subject.start; number <= subject.end; number += 1) {
+        const isAvailable = activeSubject === "common" && number === 16;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `problem-button${isAvailable ? " available" : ""}`;
+        button.setAttribute("aria-label", `${subject.label} ${number}번${isAvailable ? ", 풀이 보기" : ", 준비 중"}`);
+        button.innerHTML = `${number}<small>${isAvailable ? "풀이 보기" : "준비 중"}</small>`;
+        button.addEventListener("click", () => {
+          if (isAvailable) {
+            window.location.hash = "problem-16";
+            return;
+          }
+          selectionNotice.innerHTML = `<strong>${subject.label} ${number}번</strong> 풀이는 아직 준비 중입니다.`;
+        });
+        problemGrid.appendChild(button);
+      }
+    }
+
+    subjectTabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => {
+        activeSubject = tab.dataset.subject;
+        subjectTabs.forEach(item => item.setAttribute("aria-selected", String(item === tab)));
+        selectionNotice.textContent = "노란색으로 표시된 문제는 풀이가 준비되어 있습니다.";
+        renderProblemGrid();
+      });
+
+      tab.addEventListener("keydown", event => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        event.preventDefault();
+        const direction = event.key === "ArrowRight" ? 1 : -1;
+        subjectTabs[(index + direction + subjectTabs.length) % subjectTabs.length].focus();
+      });
+    });
+
     const totalDuration = 36;
     const steps = [
       { title: "밑을 9로 통일하기", start: 0, end: 7, box: [3.6, 74.1, 16.9, 23.3] },
@@ -882,6 +1276,25 @@
       render();
     }
 
+    function showRoute() {
+      const showSolution = window.location.hash === "#problem-16";
+      homeView.hidden = showSolution;
+      solutionView.hidden = !showSolution;
+      homeLink.hidden = !showSolution;
+      examProgress.hidden = !showSolution;
+
+      if (showSolution) {
+        document.title = "16번 풀이 · 2026년 9월 모의고사";
+      } else {
+        if (dialog.open) dialog.close();
+        resumeAfterDialog = false;
+        pause();
+        document.title = "2026년 9월 모의고사 · 풀이가 보이는 수학";
+      }
+
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
     function seek(time) {
       currentTime = clamp(time, 0, totalDuration);
       render();
@@ -933,7 +1346,10 @@
       closeConcept();
     });
 
+    window.addEventListener("hashchange", showRoute);
+    renderProblemGrid();
     render();
+    showRoute();
   </script>
 </body>
 </html>
